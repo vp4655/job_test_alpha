@@ -1,0 +1,45 @@
+{
+  "name": "twittapp",
+  "description": "Twitter Search app",
+  "main": "index.js",
+  "authors": [
+    "Valentino Perović"
+  ],
+  "license": "ISC",
+  "keywords": [
+    "Twitter",
+    "Search"
+  ],
+  "homepage": "https://github.com/vp4655/twittapp",
+  "moduleType": [],
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.4.8",
+    "angular-material": "~0.11.3",
+    "angular-socket-io": "~0.7.0",
+    "bootstrap": "~3.3.6",
+    "angular-bootstrap": "~0.14.3",
+    "angular-ui-router": "~0.2.15",
+    "angular-ui-utils": "~3.0.0",
+    "angular-touch": "~1.4.8",
+    "angular-sanitize": "~1.4.8",
+    "angular-resource": "~1.4.8",
+    "angular-mocks": "~1.4.8",
+    "angular-cookies": "~1.4.8",
+    "hammerjs": "~2.0.4",
+    "angular-messages": "~1.4.8",
+    "angular-credit-cards": "~2.4.0",
+    "ngstorage": "~0.3.10",
+    "underscore": "~1.8.3",
+    "restangular": "~1.5.1",
+    "angular-permission": "^2.0.6",
+    "angular-file-upload": "^2.2.0",
+    "angular-markdown-directive": "~0.3.1"
+  }
+}

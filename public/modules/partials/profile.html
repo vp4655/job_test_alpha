@@ -1,0 +1,147 @@
+<div ng-include="'./modules/partials/navbar.html'"></div>
+
+<script type="text/ng-template" id="myModalContent.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Add new folder</h3>
+    </div>
+    <form name="folderForm" ng-submit="ok()" role="form">
+    <div class="modal-body">
+            <div class="form-group" ng-class="{'has-error': !folderForm.folderName.$pristine && folderForm.folderName.$error.required}">
+                <label for="folderName">Folder Name</label>
+                <input type="text" name="folderName" id="folderName" class="form-control" ng-model="folderName" required>
+                <span ng-show="!folderForm.folderName.$pristine && folderForm.folderName.$error.required" class="help-block error">FolderName is required</span>
+            </div>
+    </div>
+    <div class="modal-footer">
+        <div class="form-actions">
+            <button type="submit" class="btn btn-upload btn-white btn-s">Add folder</button>
+            <button class="btn btn-cancel btn-white btn-s" type="button" ng-click="cancel()">Cancel</button>
+        </div>
+    </div>
+    </form>
+</script>
+
+
+
+<div class="container">
+    <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
+    <div class=container>
+        <div class="col-md-2 col-md-offset-10" style="text-align: right">
+            <button class="btn btn-default btn-overwrite-add" ng-click="vm.open()">
+                <span class="icon-folder-add add-folder"></span>
+            </button>
+        </div>
+    </div>
+    <div class="row" ng-show="vm.empty" style="text-align: center">
+        <p>No folders or files yet. <a style="cursor: hand;" ng-click="vm.open()">create folder</a> or <b>upload new file</b></p>
+    </div>
+    <div class="row">
+        <div class="container" style="padding-top: 20px">
+            <ul class="no-bottom-margin no-padding-left">
+                <li ng-repeat="folder in vm.folders" class="no-bullets">
+                    <div class="filename-col">
+                        <span class="icon-folder2 list-icon folder"></span>
+                        <a href="#" ng-click="vm.intoFolder(folder.dir)" class="file-name">{{folder.dir}}</a>
+                    </div>
+                    <div class="file-options">
+                        <button type="button" class="btn btn-default btn-overwrite-delete" aria-label="Delete" ng-click="vm.deleteItem(folder.dir)">
+                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                        </button>
+                    </div>
+                    <br class="clear">
+                </li>
+            </ul>
+        </div>
+        <div class="container">
+            <ul class="no-padding-left">
+                <li ng-repeat="file in vm.files" class="no-bullets">
+                    <div class="filename-col">
+                        <span class="icon-document list-icon file"></span>
+                        <span class="file-name not-link">{{file.dir}}</span>
+                    </div>
+                    <div class="file-options">
+                        <button type="button" class="btn btn-default btn-overwrite-download" aria-label="Download" ng-click="vm.getDownloadLink(file)">
+                            <span class="glyphicon glyphicon-save" aria-hidden="true"></span>
+                        </button>
+                        <button type="button" class="btn btn-default btn-overwrite-delete" aria-label="Delete" ng-click="vm.deleteItem(file.dir)">
+                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                        </button>
+                    </div>
+                    <div style="text-align: center">
+                        <a ng-show="file.show" ng-href="{{file.downloadUrl}}" ng-click="vm.closeLink(file)" download>Download {{file.dir}}</a>
+                    </div>
+                    <br class="clear">
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="upload-container">
+    <div class="container">
+        <div style="padding-top: 20px" id="upload-part">
+            <input type="file" name="file" id="file" nv-file-select="" uploader="uploader" class="btn btn-default inputfile"/>
+            <label for="file">Choose a file...</label>
+        </div>
+        <div>
+            <h3>Upload</h3>
+            <p># of items: {{ uploader.queue.length }}</p>
+
+            <table class="table">
+                <thead>
+                <tr>
+                    <th width="50%">Name</th>
+                    <th ng-show="uploader.isHTML5">Size</th>
+                    <th ng-show="uploader.isHTML5">Progress</th>
+                    <th>Status</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="item in uploader.queue">
+                    <td><strong>{{ item.file.name }}</strong></td>
+                    <td ng-show="uploader.isHTML5" nowrap>{{ item.file.size/1024/1024|number:2 }} MB</td>
+                    <td ng-show="uploader.isHTML5">
+                        <div class="progress" style="margin-bottom: 0;">
+                            <div class="progress-bar" role="progressbar" ng-style="{ 'width': item.progress + '%' }"></div>
+                        </div>
+                    </td>
+                    <td class="text-center">
+                        <span ng-show="item.isSuccess"><i class="glyphicon glyphicon-ok"></i></span>
+                        <span ng-show="item.isCancel"><i class="glyphicon glyphicon-ban-circle"></i></span>
+                        <span ng-show="item.isError"><i class="glyphicon glyphicon-remove"></i></span>
+                    </td>
+                    <td class="no-padding-top" nowrap>
+                        <button type="button" class="btn btn-upload btn-xs" ng-click="item.upload()" ng-disabled="item.isReady || item.isUploading || item.isSuccess">
+                            <span class="glyphicon glyphicon-upload"></span>
+                        </button>
+                        <button type="button" class="btn btn-cancel btn-xs" ng-click="item.cancel()" ng-disabled="!item.isUploading">
+                            <span class="glyphicon glyphicon-ban-circle"></span>
+                        </button>
+                        <button type="button" class="btn btn-remove btn-xs" ng-click="item.remove()">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <div>
+                <div>
+                    Queue progress:
+                    <div class="progress" style="">
+                        <div class="progress-bar" role="progressbar" ng-style="{ 'width': uploader.progress + '%' }"></div>
+                    </div>
+                </div>
+                <button type="button" class="btn btn-upload btn-s" ng-click="uploader.uploadAll()" ng-disabled="!uploader.getNotUploadedItems().length">
+                    <span class="glyphicon glyphicon-upload"></span> Upload all
+                </button>
+                <button type="button" class="btn btn-cancel btn-s" ng-click="uploader.cancelAll()" ng-disabled="!uploader.isUploading">
+                    <span class="glyphicon glyphicon-ban-circle"></span> Cancel all
+                </button>
+                <button type="button" class="btn btn-remove btn-s" ng-click="uploader.clearQueue()" ng-disabled="!uploader.queue.length">
+                    <span class="glyphicon glyphicon-trash"></span> Remove all
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

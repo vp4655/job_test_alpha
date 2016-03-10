@@ -1,0 +1,21 @@
+<div class="col-md-6 col-md-offset-3">
+    <h2>Login</h2>
+    <form name="loginForm" ng-submit="vm.login()" role="form">
+        <div class="form-group" ng-class="{'has-error': loginForm.username.$dirty && loginForm.username.$error.required}">
+            <label for="username">Username</label>
+            <input type="text" name="username" id="username" class="form-control" ng-model="vm.loginData.username" required>
+            <span ng-show="loginForm.username.$dirty && loginForm.username.$error.required" class="help-block">Username is required!</span>
+        </div>
+        <div class="form-group" ng-class="{'has-error': (loginForm.password.$dirty && loginForm.password.$error.required) || (!loginForm.password.$pristine && loginForm.password.$error.minlength)}">
+            <label for="password">Password</label>
+            <input type="password" name="password" id="password" class="form-control" ng-minlength="7" ng-model="vm.loginData.password" required>
+            <span ng-show="!loginForm.password.$pristine && loginForm.password.$error.required" class="help-block">Password is required!</span>
+            <span ng-show="!loginForm.password.$pristine && loginForm.password.$error.minlength" class="help-block">Password must contain more then 6 characters!</span>
+        </div>
+        <div class="form-actions">
+            <button type="submit" class="btn btn-primary">Login</button>
+            <a href="/" class="btn btn-link">Cancel</a>
+        </div>
+    </form>
+    <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">{{alert.msg}}</uib-alert>
+</div>
